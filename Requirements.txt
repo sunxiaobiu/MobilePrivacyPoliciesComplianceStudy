@@ -1,0 +1,9 @@
+requests
+pandas
+beautifulsoup4
+lxml
+fake-useragent
+selenium
+tqdm
+langdetect
+openai
