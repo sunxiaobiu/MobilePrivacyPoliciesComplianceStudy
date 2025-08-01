@@ -11,12 +11,26 @@ openai.api_key = "" # your api_key
 def match_permission_to_data_type(permission_description, data_types):
     data_types_description = "\n".join([f"{data_type} ({category}) - {desc}" for data_type, category, desc in data_types])
     messages = [
-        {"role": "system", "content": "You are an assistant that matches permissions to data types. Respond with the best match as a single data type name, without any extra explanation or category name."},
-        {"role": "user", "content": f"The permission description is: {permission_description}.\n\nHere are the available data types and their descriptions:\n{data_types_description}\n\nWhich data type does this permission most closely relate to?"}
+        {
+            "role": "system", 
+            "content": "You are a helpful assistant that maps Android permissions to privacy-related data types."
+        },
+
+        {
+            "role": "user", 
+            "content": (
+                    f"You are an assistant that matches Android permission to data types."
+                    f"The permission description is: {permission_description}"
+                    f"Here are the available data types and their descriptions:\n{data_types_description}\n"
+                    f"Respond with the best match as a single data type name, without any extra explanation or category name."
+                    f"If you think there is no matching data type, then strictly respond 'No Match'."
+                )
+        }
     ]
     response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
-        messages=messages
+        model="gpt-4o-mini",
+        messages=messages,
+        temperature=0.0
     )
 
     # Extract and return the matching data type

@@ -16,14 +16,26 @@ def match_target_to_data_type(target_info, data_types):
     data_types_description = "\n".join([f"{data_type} ({category}) - {desc}" for data_type, category, desc in data_types])
     
     messages = [
-        {"role": "system", "content": "You are an assistant that matches target information to data types. Please respond with the best match as a single data type name, without any extra explanation or category name."},
-        {"role": "user", "content": f"The target info is: {target_info}.\n\nHere are the available data types and their descriptions:\n{data_types_description}\n\nWhich data type does this target most closely relate to?"}
+        {"role": "system", 
+        "content": 
+            "You are a helpful assistant that maps phrases extracted from privacy policies to privacy-related data types."
+        },
+        
+        {"role": "user", 
+        "content": (
+            f"You are an assistant that matches privacy policy phrases to data types."
+            f"The privacy policy phrase is: {target_info}."
+            f"Here are the available data types and their descriptions:\n{data_types_description}\n"
+            f"Respond with the best match as a single data type name, without any extra explanation or category name.\n"
+            f"If you think there is no matching data type, then strictly response 'No Match'.\n"
+            )
+        }
     ]
     
-    # Make the API call to OpenAI's GPT-3.5 model
     response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",  # Using GPT-3.5 model
-        messages=messages
+        model="gpt-4o-mini",  
+        messages=messages,
+        temperature=0.0
     )
     
     # Extract and return the matched data type
